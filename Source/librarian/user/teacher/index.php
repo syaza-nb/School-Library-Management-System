@@ -1,0 +1,145 @@
+<?php
+session_start();
+include 'inc/connection.php';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Library Management System</title>
+  <link rel="stylesheet" href="inc/css/bootstrap.min.css">
+  <link rel="stylesheet" href="inc/css/fontawesome-all.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .login {
+      background: url('inc/img/login-background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .reg-header h1 {
+      color: white;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+    }
+
+    .login-content {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px 40px;
+      border-radius: 10px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .login-body h4 {
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .mb-20 {
+      margin-bottom: 20px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      color: white;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    .btn-info.submit {
+      width: 100%;
+    }
+
+    a.reset_pass {
+      display: block;
+      margin-top: 10px;
+      text-align: right;
+      font-size: 0.9em;
+    }
+
+    .change_link a {
+      font-weight: bold;
+    }
+
+    .alert-warning {
+      margin-top: 15px;
+    }
+    .submit-btn {
+  background-color: #073f5f;     /* Primary blue */
+  color: white;                  /* Text color */
+  padding: 10px 20px;            /* Size */
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  width: 100%;                   /* Full width */
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;     /* Darker on hover */
+  cursor: pointer;
+}
+
+  </style>
+</head>
+<body>
+
+<div class="login">
+  <div class="reg-header text-center">
+    <h1>Library Management System</h1><br><br>
+  </div>
+  <div class="login-content">
+    <div class="login-body">
+      <h4 class="text-center">Teacher Login Form</h4>
+      <form action="" method="post">
+        <div class="mb-20">
+          <input type="text" name="username" class="form-control" placeholder="Username" required />
+        </div>
+        <div class="mb-20">
+          <input type="password" name="password" class="form-control" placeholder="Password" required />
+        </div>
+        <div class="mb-20">
+          <input class="btn submit-btn" type="submit" name="login" value="Login">
+          <a class="reset_pass" href="changepass.php">Lost your password?</a>
+        </div>
+      </form>
+      <?php
+      if (isset($_POST["login"])) {
+        $res = mysqli_query($link, "SELECT * FROM t_registration WHERE username='$_POST[username]' AND password='$_POST[password]'");
+        $count = mysqli_num_rows($res);
+        if ($count == 0) {
+          echo '<div class="alert alert-warning"><strong>Invalid!</strong> Username or Password.</div>';
+        } else {
+          $_SESSION["teacher"] = $_POST["username"];
+          echo '<script type="text/javascript">window.location="my-issued-books.php";</script>';
+        }
+      }
+      ?>
+    </div>
+    <div class="login-footer text-center mt-3">
+      <p class="change_link">New to site? <a href="registration.php">Create Account</a></p>
+    </div>
+  </div>
+  <div class="footer mt-4">
+    <p>&copy; All rights reserved school library</p>
+  </div>
+</div>
+
+<script src="inc/js/jquery-2.2.4.min.js"></script>
+<script src="inc/js/bootstrap.min.js"></script>
+<script src="inc/js/custom.js"></script>
+</body>
+</html>
